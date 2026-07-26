@@ -1,0 +1,26 @@
+[
+    {
+        "brand": "Smiski",
+        "name": "Construction Series",
+        "figures": [
+            {
+                "id": "smiski-digging-hole",
+                "name": "SMISKI Digging a Hole"
+            },
+            {
+                "id": "smiski-crushing-rock",
+                "name": "SMISKI Crushing Rock"
+            }
+        ]
+    },
+    {
+        "brand": "Smiski",
+        "name": "Birthday Series",
+        "figures": [
+            {
+                "id": "smiski-giving-bouqet",
+                "name": "SMISKI Giving a Bouquet"
+            }
+        ]
+    }
+]
