@@ -14,7 +14,7 @@ class SeriesListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.dataSource = seriesViewModel
+        tableView.dataSource = self
         tableView.delegate = self
         
         view.addSubview(tableView)
@@ -30,9 +30,27 @@ class SeriesListViewController: UIViewController {
     }
 }
 
-extension SeriesListViewController: UITableViewDelegate {
+extension SeriesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailView = SeriesDetailViewController(series: seriesViewModel.data[indexPath.row])
         navigationController?.pushViewController(detailView, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        seriesViewModel.data.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let series = seriesViewModel.data[indexPath.row]
+        
+        
+        let cell = UITableViewCell.init(style: .default, reuseIdentifier: "SeriesCell")
+        cell.accessoryType = .disclosureIndicator
+        var config = cell.defaultContentConfiguration()
+        config.text = series.name
+        config.secondaryText = "\(series.figures.filter({$0.unboxed}).count)/\(series.figures.count) unboxed"
+        
+        cell.contentConfiguration = config
+        return cell
     }
 }

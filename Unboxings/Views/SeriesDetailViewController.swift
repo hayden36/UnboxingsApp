@@ -49,6 +49,7 @@ extension SeriesDetailViewController: UITableViewDataSource, UITableViewDelegate
         var config = cell.defaultContentConfiguration()
         config.text = item.name
         config.secondaryText = item.id
+        cell.accessoryType = .disclosureIndicator
         cell.contentConfiguration = config
         return cell
     }

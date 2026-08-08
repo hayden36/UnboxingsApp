@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24902" systemVersion="25F84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
-    <entity name="Unboxing" representedClassName="Unboxing" syncable="YES" codeGenerationType="class">
-        <attribute name="figureId" attributeType="String"/>
-        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="timestamp" attributeType="Date" defaultDateTimeInterval="806773440" usesScalarValueType="NO"/>
+    <entity name="FigureUnboxing" representedClassName="FigureUnboxing" syncable="YES" codeGenerationType="class">
+        <attribute name="figureId" attributeType="String" defaultValueString=""/>
+        <attribute name="timestamp" attributeType="Date" defaultDateTimeInterval="806987760" usesScalarValueType="NO"/>
     </entity>
 </model>
