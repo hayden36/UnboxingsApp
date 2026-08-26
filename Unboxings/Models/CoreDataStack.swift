@@ -9,6 +9,8 @@ import CoreData
 
 class CoreDataStack {
     
+    private init() {}
+    
     static let shared = CoreDataStack()
     
     var persistentContainer: NSPersistentContainer = {

@@ -6,14 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 class SeriesListViewController: UIViewController {
     let tableView = UITableView(frame: .zero, style: .insetGrouped)
     let seriesViewModel = SeriesViewModel()
-    
-    
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -27,6 +29,12 @@ class SeriesListViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
 }
 
@@ -43,12 +51,11 @@ extension SeriesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let series = seriesViewModel.data[indexPath.row]
         
-        
         let cell = UITableViewCell.init(style: .default, reuseIdentifier: "SeriesCell")
         cell.accessoryType = .disclosureIndicator
         var config = cell.defaultContentConfiguration()
         config.text = series.name
-        config.secondaryText = "\(series.figures.filter({$0.unboxed}).count)/\(series.figures.count) unboxed"
+        config.secondaryText = "?/\(series.figures.count) unboxed"
         
         cell.contentConfiguration = config
         return cell

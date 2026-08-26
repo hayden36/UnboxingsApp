@@ -12,6 +12,7 @@ class FigureDetailViewController: UIViewController {
     let figure: Figure
     let figureNameLabel = UILabel()
     let button = UIButton(configuration: .borderedProminent())
+    weak var delegate: FigureDelegate?
     
     init(figure: Figure) {
         self.figure = figure
@@ -31,7 +32,7 @@ class FigureDetailViewController: UIViewController {
         view.addSubview(button)
         figureNameLabel.text = figure.name
         
-        button.setTitle("test", for: .normal)
+        button.setTitle("Add unboxing", for: .normal)
         
         figureNameLabel.translatesAutoresizingMaskIntoConstraints = false
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -43,10 +44,11 @@ class FigureDetailViewController: UIViewController {
             figureNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             figureNameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             
-            button.topAnchor.constraint(equalTo: figureNameLabel.bottomAnchor),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+//            button.topAnchor.constraint(equalTo: figureNameLabel.bottomAnchor),
+            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -50),
             button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            button.heightAnchor.constraint(equalToConstant: 60)
         ])
         
     }
@@ -54,7 +56,8 @@ class FigureDetailViewController: UIViewController {
     @objc func buttonTap(sender: UITapGestureRecognizer) {
         let item = FigureUnboxing(context: CoreDataStack.shared.persistentContainer.viewContext)
         item.figureId = figure.id
-        item.timestamp = Date.distantFuture
+        item.timestamp = Date.now
         CoreDataStack.shared.saveContext()
+        delegate?.didAddUnboxing()
     }
 }

@@ -9,23 +9,19 @@ import Foundation
 import CoreData
 
 
-
 class Figure: Identifiable, Codable {
     let id: String
     let name: String
-    var unboxed: Bool = false
     
-    init(id: String, name: String, unboxed: Bool = false) {
+    init(id: String, name: String) {
         self.id = id
         self.name = name
-        self.unboxed = unboxed
     }
     
     required init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
-        self.unboxed = try container.decodeIfPresent(Bool.self, forKey: .unboxed) ?? false
     }
 }
 
@@ -67,4 +63,8 @@ class SeriesViewModel: NSObject {
         }
     }
     
+}
+
+protocol FigureDelegate: AnyObject {
+    func didAddUnboxing()
 }
