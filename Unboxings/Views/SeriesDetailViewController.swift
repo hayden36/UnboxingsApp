@@ -68,7 +68,7 @@ extension SeriesDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = FigureDetailViewController(figure: series.figures[indexPath.row])
+        let vc = FigureDetailViewController(seriesId: series.id, figure: series.figures[indexPath.row])
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -76,10 +76,8 @@ extension SeriesDetailViewController: UITableViewDataSource, UITableViewDelegate
 }
 extension SeriesDetailViewController: FigureDelegate {
     func didAddUnboxing() {
-        print("unbxoing added. fetching requests and refreshing tableview")
+        print("unboxing added. fetching requests and refreshing tableview")
         fetchUnboxings()
         tableView.reloadData()
     }
-    
-    
 }

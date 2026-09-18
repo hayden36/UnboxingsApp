@@ -9,7 +9,7 @@ import Foundation
 import CoreData
 
 
-class Figure: Identifiable, Codable {
+struct Figure: Identifiable, Codable {
     let id: String
     let name: String
     
@@ -18,14 +18,14 @@ class Figure: Identifiable, Codable {
         self.name = name
     }
     
-    required init(from decoder: any Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(String.self, forKey: .id)
         self.name = try container.decode(String.self, forKey: .name)
     }
 }
 
-class Series: Identifiable, Codable {
+struct Series: Identifiable, Codable {
     var id: String {
         return "\(brand)-\(name)"
     }
@@ -40,7 +40,7 @@ class Series: Identifiable, Codable {
        
     }
     
-    required init(from decoder: any Decoder) throws {
+    init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
         self.brand = try container.decode(String.self, forKey: .brand)

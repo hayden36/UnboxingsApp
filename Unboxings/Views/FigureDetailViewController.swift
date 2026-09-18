@@ -10,12 +10,16 @@ import CoreData
 
 class FigureDetailViewController: UIViewController {
     let figure: Figure
+    let seriesId: Series.ID
     let figureNameLabel = UILabel()
-    let button = UIButton(configuration: .borderedProminent())
+    let unboxingsStackView = UIStackView()
     weak var delegate: FigureDelegate?
+    let fr = NSFetchRequest<FigureUnboxing>(entityName: "FigureUnboxing")
+    var unboxings: [FigureUnboxing] = []
     
-    init(figure: Figure) {
+    init(seriesId: Series.ID, figure: Figure) {
         self.figure = figure
+        self.seriesId = seriesId
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -25,32 +29,48 @@ class FigureDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        let addUnboxingButton = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(buttonTap))
+        navigationItem.rightBarButtonItems = [addUnboxingButton]
+        
+        fr.predicate = NSPredicate(format: "figureId == %@",figure.id)
         view.backgroundColor = .systemBackground
         navigationItem.title = figure.name
+        
         view.addSubview(figureNameLabel)
-        view.addSubview(button)
         figureNameLabel.text = figure.name
-        
-        button.setTitle("Add unboxing", for: .normal)
-        
         figureNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonTap)))
-
         NSLayoutConstraint.activate([
             figureNameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             figureNameLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200),
             figureNameLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             figureNameLabel.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            
-//            button.topAnchor.constraint(equalTo: figureNameLabel.bottomAnchor),
-            button.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -50),
-            button.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            button.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            button.heightAnchor.constraint(equalToConstant: 60)
         ])
         
+        view.addSubview(unboxingsStackView)
+        unboxingsStackView.axis = .vertical
+        unboxingsStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            unboxingsStackView.topAnchor.constraint(equalTo: figureNameLabel.bottomAnchor),
+            unboxingsStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            unboxingsStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            unboxingsStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+        ])
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        do {
+            unboxings =  try CoreDataStack.shared.persistentContainer.viewContext.fetch(fr)
+            print(unboxings)
+            for unboxing in unboxings {
+                let text = UILabel()
+                text.text = unboxing.id.debugDescription
+                unboxingsStackView.addArrangedSubview(text)
+            }
+        } catch let error as NSError {
+            print(error)
+        }
     }
     
     @objc func buttonTap(sender: UITapGestureRecognizer) {
